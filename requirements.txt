@@ -116,7 +116,7 @@ itsdangerous==2.1.2
 Jinja2==3.1.2
 jiter==0.10.0
 jmespath==1.0.1
-keras==3.10.0
+
 kiwisolver==1.4.8
 kombu==5.4.2
 langcodes==3.3.0
