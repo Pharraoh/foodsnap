@@ -1,0 +1,378 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dish-to-Dish Decoder (Static)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body class="min-h-screen">
+    <!-- Landing -->
+    <section id="landing" class="min-h-screen">
+      <div class="container mx-auto px-4 py-12">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <!-- Copy / CTA -->
+          <div class="space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2l1.5 3L6 8l3-1.5L12 8l-1.5-3L12 2l-3 1.5L6 2z"/></svg>
+              AI-powered
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+              Turn any food photo into a <span class="text-orange-600">step‑by‑step recipe</span>
+            </h1>
+            <p class="text-neutral-600 text-lg">
+              Upload a dish photo (or pick a sample). We’ll infer ingredients and generate a chef-quality recipe.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button id="generate-btn" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-orange-600 text-white font-medium shadow-warm transition-smooth hover:brightness-110">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14m7-7H5"/></svg>
+                Upload dish photo
+              </button>
+              <span class="text-sm text-neutral-500">JPG, PNG up to 5MB</span>
+            </div>
+          </div>
+
+          <!-- Hero image -->
+          <div class="relative">
+            <img src="{% static 'imgs/hero-food.jpg' %}" alt="Delicious food" class="rounded-2xl w-full h-[420px] object-cover shadow-elegant" />
+            <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-warm p-4 hidden md:block">
+              <div class="font-semibold">Instant recipe</div>
+              <div class="text-sm text-neutral-600">Cook at home like a pro</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Uploader -->
+        <div class="max-w-2xl mx-auto mt-12">
+          <form method="post" enctype="multipart/form-data" action="{% url 'recipes:upload_food_image' %}">
+            {% csrf_token %}
+            <label id="drop-area"
+              class="border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-smooth bg-white hover:shadow-warm block">
+
+              <!-- File input (hidden but functional) -->
+              <input id="file-input" type="file" name="food_image" accept="image/*" class="hidden" required />
+
+              <div class="flex flex-col items-center gap-4">
+                <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 16l5-6 4 5 5-6 4 5"/>
+                    <path d="M21 21H3V3"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium">Drag & drop your photo here</p>
+                  <p class="text-sm text-neutral-500">or click to browse</p>
+                </div>
+              </div>
+            </label>
+
+            <!-- Submit button -->
+            <div class="mt-4 text-center">
+              <button type="submit"
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-600 text-white font-medium shadow hover:brightness-110">
+                <i class="fas fa-magic"></i>
+                Generate Recipe
+              </button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Samples -->
+        <div class="w-full max-w-4xl mx-auto mt-10">
+          <h3 class="text-lg font-semibold mb-4 text-center">Or try these sample dishes</h3>
+          <div id="sample-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Features -->
+        <div class="grid md:grid-cols-3 gap-8 py-16">
+          <!-- AI-Powered Analysis -->
+          <div class="text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-gradient-warm flex items-center justify-center mx-auto text-white text-2xl">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="text-xl font-semibold">AI-Powered Analysis</h3>
+            <p class="text-neutral-600">Analyzes your food photo to identify ingredients and cooking methods.</p>
+          </div>
+
+          <!-- One-Click Recipes -->
+          <div class="text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-gradient-warm flex items-center justify-center mx-auto text-white text-2xl">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <h3 class="text-xl font-semibold">One-Click Recipes</h3>
+            <p class="text-neutral-600">Get a full ingredient list and step-by-step instructions instantly.</p>
+          </div>
+
+          <!-- Chef-Level Results -->
+          <div class="text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-gradient-warm flex items-center justify-center mx-auto text-white text-2xl">
+              <i class="fas fa-concierge-bell text-white text-2xl"></i> <!-- Pro icon, fallback below -->
+            </div>
+            <h3 class="text-xl font-semibold">Chef-Level Results</h3>
+            <p class="text-neutral-600">Recreate restaurant-quality dishes at home with precise guidance.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Loading -->
+    <section id="loader" class="min-h-screen hidden">
+      <div class="min-h-screen flex items-center justify-center">
+        <div class="rounded-2xl bg-white shadow-elegant p-10 text-center space-y-6">
+          <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 7h7l-5.5 4 2 8-6.5-4.5L6.5 21l2-8L3 9h7z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Cooking up your recipe…</h3>
+            <p class="text-neutral-600">Our AI chef is studying the image and creating a personalized recipe.</p>
+          </div>
+          <div class="w-64 mx-auto">
+            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-warm animate-pulse rounded-full w-3/4"></div>
+            </div>
+            <p class="text-xs text-neutral-500 mt-2 text-center">This usually takes 10–15 seconds</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="result" class="min-h-screen hidden bg-[hsl(35,20%,97%)]">
+      <div class="container mx-auto px-4 py-8">
+        <div class="flex items-center gap-4 mb-8">
+          <button id="try-another" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 bg-white transition-smooth hover:shadow-warm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
+            Try Another Dish
+          </button>
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 7h7l-5.5 4 2 8-6.5-4.5L6.5 21l2-8L3 9h7z"/></svg>
+            <h1 class="text-2xl font-bold">Recipe Generated!</h1>
+          </div>
+        </div>
+        <div id="recipe-root"></div>
+      </div>
+    </section>
+
+    <script>
+      // Simple toast
+      function toast(msg){
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.textContent = msg;
+        document.body.appendChild(el);
+        requestAnimationFrame(()=> el.classList.add('show'));
+        setTimeout(()=>{ el.classList.remove('show'); el.addEventListener('transitionend', ()=> el.remove()); }, 2200);
+      }
+
+      // App state
+      const state = {
+        recipe: null,
+        isLoading: false,
+        uploadedImageURL: null
+      };
+
+      // Elements
+      const landing = () => document.getElementById('landing');
+      const result = () => document.getElementById('result');
+      const loader = () => document.getElementById('loader');
+      const dropArea = () => document.getElementById('drop-area');
+      const fileInput = () => document.getElementById('file-input');
+      const genBtn = () => document.getElementById('generate-btn');
+      const sampleGrid = () => document.getElementById('sample-grid');
+      const recipeRoot = () => document.getElementById('recipe-root');
+      const tryAnother = () => document.getElementById('try-another');
+
+      // Sample images
+      const samples = [
+        {src:'{% static 'imgs/sample-pizza.jpg' %}', name:'Margherita Pizza'},
+        {src:'{% static 'imgs/sample-pasta.jpg' %}', name:'Creamy Pasta'},
+        {src:'{% static 'imgs/sample-salad.jpg' %}', name:'Fresh Salad'}
+      ];
+
+      function renderSamples(){
+        sampleGrid().innerHTML = '';
+        samples.forEach((s, i)=>{
+          const card = document.createElement('button');
+          card.className = 'group overflow-hidden rounded-xl bg-white shadow-warm transition-smooth hover:-translate-y-0.5';
+          card.innerHTML = `
+            <div class="relative">
+              <img src="${s.src}" alt="${s.name}" class="w-full h-40 object-cover group-hover:scale-105 transition-smooth"/>
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-smooth flex items-center justify-center">
+                <span class="px-3 py-1 rounded-full bg-white/90 text-sm font-medium">${s.name}</span>
+              </div>
+            </div>
+          `;
+          card.addEventListener('click', ()=> {
+            state.uploadedImageURL = s.src;
+            startGeneration();
+          });
+          sampleGrid().appendChild(card);
+        });
+      }
+
+      function show(section){
+        landing().classList.add('hidden');
+        result().classList.add('hidden');
+        loader().classList.add('hidden');
+        section.classList.remove('hidden');
+      }
+
+      function resetApp(){
+        state.recipe = null;
+        state.uploadedImageURL = null;
+        fileInput().value = '';
+        show(landing());
+      }
+
+      function attachUploader(){
+        ['dragenter','dragover'].forEach(evt=>{
+          dropArea().addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); dropArea().classList.add('dropzone-hover'); });
+        });
+        ['dragleave','drop'].forEach(evt=>{
+          dropArea().addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); dropArea().classList.remove('dropzone-hover'); });
+        });
+        dropArea().addEventListener('drop', e=>{
+          const file = e.dataTransfer.files?.[0];
+          if(file) handleFile(file);
+        });
+        dropArea().addEventListener('click', ()=> fileInput().click());
+        fileInput().addEventListener('change', (e)=>{
+          const file = e.target.files?.[0];
+          if(file) handleFile(file);
+        });
+      }
+
+      function handleFile(file){
+        if(!file.type.startsWith('image/')){
+          toast('Please upload an image');
+          return;
+        }
+        const url = URL.createObjectURL(file);
+        state.uploadedImageURL = url;
+        // ❌ Don't auto-start
+        // startGeneration();
+
+        // ✅ Optional: show preview inside drop-area
+        dropArea().innerHTML = `<img src="${url}" class="mx-auto max-h-48 rounded-lg"/>`;
+      }
+
+      function startGeneration(){
+        state.isLoading = true;
+        show(loader());
+        // Simulate AI call (replace with real API later)
+        setTimeout(()=>{
+          state.recipe = generateMockRecipe();
+          state.isLoading = false;
+          renderRecipe();
+          show(result());
+          toast('Recipe generated!');
+        }, 1500);
+      }
+
+      function generateMockRecipe(){
+        // A friendly fake recipe that looks like the React one
+        return {
+          title: "Restaurant-Style Margherita Pizza",
+          description: "A classic thin-crust pizza with fresh tomatoes, mozzarella, and basil.",
+          cookTime: "25 mins",
+          servings: "2-3",
+          difficulty: "Easy",
+          ingredients: [
+            "2 cups all-purpose flour",
+            "1 tsp instant yeast",
+            "1/2 tsp sugar",
+            "3/4 cup warm water",
+            "2 tbsp olive oil",
+            "1 cup crushed tomatoes",
+            "200g fresh mozzarella, sliced",
+            "Fresh basil leaves",
+            "Salt & pepper"
+          ],
+          instructions: [
+            "Preheat oven to 250°C (480°F) with a tray inside.",
+            "Mix flour, yeast, sugar, water, and oil. Knead 5–7 mins.",
+            "Roll dough thin, spread tomatoes, season lightly.",
+            "Top with mozzarella. Bake 8–12 mins until blistered.",
+            "Finish with basil and a drizzle of olive oil."
+          ],
+          tips: [
+            "Chill the dough 1–2 hours for better flavor.",
+            "Brush the crust with garlic oil before baking."
+          ]
+        };
+      }
+
+      function renderRecipe(){
+        const r = state.recipe;
+        if(!r) return;
+
+        const diffClass = r.difficulty === 'Easy' ? 'badge-easy' : r.difficulty==='Medium' ? 'badge-medium' : 'badge-hard';
+
+        recipeRoot().innerHTML = `
+          <div class="w-full max-w-4xl mx-auto space-y-6">
+            <div class="rounded-2xl bg-white shadow-elegant">
+              <div class="p-6 flex items-start justify-between">
+                <div class="flex-1">
+                  <h2 class="text-2xl font-bold mb-2">${r.title}</h2>
+                  <p class="text-neutral-600 text-lg">${r.description}</p>
+                </div>
+                <span class="px-2.5 py-1.5 rounded-full text-sm font-medium ${diffClass}">${r.difficulty}</span>
+              </div>
+              <div class="px-6 pb-6 grid grid-cols-3 gap-4 text-sm">
+                <div class="rounded-lg bg-orange-50 p-3"><div class="font-semibold">Cook Time</div><div>${r.cookTime}</div></div>
+                <div class="rounded-lg bg-orange-50 p-3"><div class="font-semibold">Servings</div><div>${r.servings}</div></div>
+                <div class="rounded-lg bg-orange-50 p-3"><div class="font-semibold">Difficulty</div><div>${r.difficulty}</div></div>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="rounded-2xl bg-white shadow-elegant">
+                <div class="p-6 border-b"><h3 class="text-xl font-semibold">Ingredients</h3></div>
+                <div class="p-6"><ul class="space-y-2">
+                  ${r.ingredients.map(i=>`
+                    <li class="flex items-start gap-3">
+                      <span class="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></span>
+                      <span class="text-sm">${i}</span>
+                    </li>`).join('')}
+                </ul></div>
+              </div>
+              <div class="rounded-2xl bg-white shadow-elegant">
+                <div class="p-6 border-b"><h3 class="text-xl font-semibold">Instructions</h3></div>
+                <div class="p-6"><ol class="space-y-3 list-decimal list-inside">
+                  ${r.instructions.map(step=>`<li class="text-sm leading-relaxed">${step}</li>`).join('')}
+                </ol></div>
+              </div>
+            </div>
+
+            ${r.tips && r.tips.length ? `
+            <div class="rounded-2xl bg-white shadow-elegant">
+              <div class="p-6 border-b"><h3 class="text-xl font-semibold">Chef Tips</h3></div>
+              <div class="p-6">
+                <ul class="space-y-2">
+                  ${r.tips.map(t=>`
+                    <li class="flex items-start gap-3">
+                      <span class="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0"></span>
+                      <span class="text-sm">${t}</span>
+                    </li>`).join('')}
+                </ul>
+              </div>
+            </div>`: ''}
+          </div>
+        `;
+      }
+
+      // Wire up
+      document.addEventListener('DOMContentLoaded', ()=>{
+        renderSamples();
+        attachUploader();
+        genBtn().addEventListener('click', ()=> fileInput().click());
+        tryAnother().addEventListener('click', resetApp);
+      });
+    </script>
+  </body>
+</html>

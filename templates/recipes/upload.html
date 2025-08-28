@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FoodSnap – Upload Dish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body class="min-h-screen bg-gray-50">
+
+    <!-- Landing -->
+    <section id="landing" class="min-h-screen flex items-center">
+      <div class="container mx-auto px-4 py-12">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+
+          <!-- Copy / CTA -->
+          <div class="space-y-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+              Turn any food photo into a <span class="text-orange-600">step-by-step recipe</span>
+            </h1>
+            <p class="text-neutral-600 text-lg">
+              Upload a dish photo (or pick a sample). Our AI will infer ingredients and generate a recipe.
+            </p>
+
+            <!-- Real Django form -->
+            <form id="upload-form" method="post" enctype="multipart/form-data" class="space-y-4">
+              {% csrf_token %}
+              <label class="block">
+                <input id="file-input" type="file" name="food_image" accept="image/*" class="hidden" required />
+                <button type="button" onclick="document.getElementById('file-input').click()"
+                  class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-orange-600 text-white font-medium shadow hover:brightness-110">
+                  <i class="fas fa-upload"></i>
+                  Upload Dish Photo
+                </button>
+              </label>
+              <button type="submit" class="block px-5 py-3 rounded-xl bg-green-600 text-white font-medium shadow hover:brightness-110">
+                Generate Recipe
+              </button>
+            </form>
+          </div>
+
+          <!-- Hero image -->
+          <div class="relative">
+            <img src="{% static 'imgs/hero-food.jpg' %}" alt="Delicious food"
+              class="rounded-2xl w-full h-[420px] object-cover shadow-lg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading -->
+    <section id="loader" class="min-h-screen hidden">
+      <div class="min-h-screen flex items-center justify-center">
+        <div class="rounded-2xl bg-white shadow p-10 text-center space-y-6">
+          <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto animate-pulse">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l3 7h7l-5.5 4 2 8-6.5-4.5L6.5 21l2-8L3 9h7z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Cooking up your recipe…</h3>
+            <p class="text-neutral-600">Our AI chef is studying the image and creating a personalized recipe.</p>
+          </div>
+          <div class="w-64 mx-auto">
+            <div class="h-2 bg-neutral-200 rounded-full overflow-hidden">
+              <div class="h-full bg-orange-500 animate-pulse rounded-full w-3/4"></div>
+            </div>
+            <p class="text-xs text-neutral-500 mt-2 text-center">This usually takes 10–15 seconds</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JS to handle loader -->
+    <script>
+      const form = document.getElementById('upload-form');
+      const landing = document.getElementById('landing');
+      const loader = document.getElementById('loader');
+
+      form.addEventListener('submit', function() {
+        landing.classList.add('hidden');   // hide upload section
+        loader.classList.remove('hidden'); // show loader
+      });
+    </script>
+  </body>
+</html>

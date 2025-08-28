@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodSnap - Image to Recipe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-lg">
+    <h1 class="text-2xl font-bold mb-4 text-center">🍲 FoodSnap</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="image" accept="image/*"
+             class="block w-full text-sm text-gray-600 mb-4 border rounded p-2" required>
+      <button type="submit"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full">
+        Generate Recipe
+      </button>
+    </form>
+
+    <div id="result" class="mt-6 text-gray-700 whitespace-pre-line"></div>
+  </div>
+
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      const response = await fetch("/generate-recipe/", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      document.getElementById("result").textContent = data.recipe || data.error;
+    });
+  </script>
+
+</body>
+</html>
