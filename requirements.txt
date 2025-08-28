@@ -188,7 +188,7 @@ pyttsx3==2.90
 pytweening==1.0.7
 pytz==2023.3.post1
 pywhatkit==5.4
-pywin32==304
+
 PyYAML==6.0.2
 redis==5.2.1
 regex==2024.11.6
