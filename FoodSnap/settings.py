@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-(pk14_w22wdos-p&sopoldwyubj_60^i7x3bd6iq**-%t^mvwf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "foodsnap-71s8.onrender.com",
+    "127.0.0.1",  # Keep this for local development
+    "localhost",   # Also useful for debugging
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://foodsnap-71s8.onrender.com",
+]
 
 GEMINI_API_KEY = "AIzaSyCYcZWHVdlmWbGJPzNAPlR1VsU1Jtxsl3c"
 
