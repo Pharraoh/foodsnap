@@ -118,10 +118,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 import os
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# Where collectstatic will put static files
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Where your static files are served from
+STATIC_URL = "/static/"
+
 
 
 MEDIA_URL = '/media/'
