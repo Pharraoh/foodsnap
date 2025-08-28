@@ -3,3 +3,4 @@ setuptools>=70.0.0
 wheel>=0.43.0
 cryptography==42.0.7
 lxml==4.9.4
+Django==5.0.6
