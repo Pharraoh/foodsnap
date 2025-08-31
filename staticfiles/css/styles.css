@@ -1,0 +1,28 @@
+
+/* Custom utilities approximating the original design */
+:root{
+  --bg: #fffaf3;
+  --fg: #2d2318;
+}
+html,body{height:100%}
+body{background:var(--bg); color:var(--fg);}
+/* Smooth transitions */
+.transition-smooth{transition: all .2s ease-in-out;}
+/* Warm, soft shadows */
+.shadow-warm{box-shadow: 0 10px 25px rgba(255,140,0,.15), 0 2px 8px rgba(0,0,0,.06);}
+.shadow-elegant{box-shadow: 0 12px 30px rgba(0,0,0,.08);}
+/* Card-like gradient background */
+.bg-gradient-subtle{background: linear-gradient(180deg, rgba(255,247,237,0.7), rgba(255,255,255,0.9));}
+/* Accent gradient bar for loaders */
+.bg-gradient-warm{background: linear-gradient(90deg, #ffb86b, #ff7e5f, #feb47b);}
+/* Accent color helpers */
+.badge-easy{background:#e6ffed; color:#116329;}
+.badge-medium{background:#fff7e6; color:#8a4b00;}
+.badge-hard{background:#ffe6e6; color:#9b1c1c;}
+/* Uploader dashed border hover */
+.dropzone-hover{border-color: rgb(234 88 12); background-color: rgba(234,88,12,.05);}
+/* Toast */
+.toast{position:fixed; top:16px; right:16px; background:#111827; color:#fff; padding:.75rem 1rem; border-radius:.75rem; opacity:0; transform: translateY(-8px); transition: all .2s ease;}
+.toast.show{opacity:1; transform:none;}
+/* Hide input */
+input[type="file"]{display:none}
