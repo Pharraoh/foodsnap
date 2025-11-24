@@ -5,10 +5,10 @@ from django.conf import settings
 import google.generativeai as genai
 
 # Configure Gemini (replace with your actual API key setup)
-genai.configure(api_key="AIzaSyCYcZWHVdlmWbGJPzNAPlR1VsU1Jtxsl3c")
+genai.configure(api_key="AIzaSyD2cbxnI7kwzkrCjU3XedKcQo_B7ViBd64")
 
 # Load the model once (global)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.5-pro")
 
 def generate_recipe_from_image(image_path):
     prompt = """
