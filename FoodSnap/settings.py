@@ -82,6 +82,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'FoodSnap.wsgi.application'
 
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+
+GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")
+
+
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

@@ -5,7 +5,8 @@ from django.conf import settings
 import google.generativeai as genai
 
 # Configure Gemini (replace with your actual API key setup)
-genai.configure(api_key="AIzaSyD2cbxnI7kwzkrCjU3XedKcQo_B7ViBd64")
+genai.configure(api_key=settings.GOOGLE_API_KEY)
+
 
 # Load the model once (global)
 model = genai.GenerativeModel("gemini-2.5-pro")
