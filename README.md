@@ -76,5 +76,5 @@ GEMINI_API_KEY=your_api_key_here (Generate a Gemini API key prior)
 
 
 ▶️ Run the App
-python manage.py migrate
-python manage.py runserver
+- python manage.py migrate
+- python manage.py runserver
