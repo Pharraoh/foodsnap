@@ -72,7 +72,7 @@ pip install -r requirements.txt
 
 
 Create a .env file:
-GEMINI_API_KEY=your_api_key_here (Generate a Gemini API key prior)
+- GEMINI_API_KEY=your_api_key_here (Generate a Gemini API key prior)
 
 
 ▶️ Run the App
