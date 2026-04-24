@@ -9,7 +9,7 @@ genai.configure(api_key=settings.GOOGLE_API_KEY)
 
 
 # Load the model once (global)
-model = genai.GenerativeModel("gemini-2.5-pro")
+model = genai.GenerativeModel("gemini-3-flash-preview")
 
 def generate_recipe_from_image(image_path):
     prompt = """
